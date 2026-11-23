@@ -15,6 +15,11 @@ class Loan extends Model
         'status'
     ];
 
+    protected $casts = [
+        'tanggal_pinjam' => 'date',
+        'tanggal_kembali_rencana' => 'date',
+    ];
+
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
