@@ -8,15 +8,12 @@ const props = defineProps({
     search: String,
 });
 
-// Nilai awal kotak pencarian diisi dari props.search
 const keyword = ref(props.search);
 
-// Dijalankan saat menekan Enter di kotak pencarian
 function cari() {
     router.get('/books', { search: keyword.value });
 }
 
-// Dijalankan saat tombol Hapus diklik, dengan konfirmasi dulu
 function hapus(id) {
     if (confirm('Yakin ingin menghapus buku ini?')) {
         router.delete(route('books.destroy', id));
@@ -28,12 +25,10 @@ function hapus(id) {
     <AuthenticatedLayout>
         <h1>Data Buku</h1>
 
-        <!-- Flash message sukses -->
         <div v-if="$page.props.flash.success">
             {{ $page.props.flash.success }}
         </div>
 
-        <!-- Flash message error (latihan mandiri) -->
         <div v-if="$page.props.flash.error" style="color: red">
             {{ $page.props.flash.error }}
         </div>
@@ -73,3 +68,4 @@ function hapus(id) {
             </tbody>
         </table>
     </AuthenticatedLayout>
+</template>

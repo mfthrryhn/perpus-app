@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,9 @@ Route::middleware('auth')->group(function () {
 
     // Langkah 3: route CRUD buku (index, create, store, show, edit, update, destroy)
     Route::resource('books', BookController::class);
+
+    // Langkah 6: route CRUD anggota (7 route)
+    Route::resource('members', MemberController::class);
 });
 
 require __DIR__.'/auth.php';
