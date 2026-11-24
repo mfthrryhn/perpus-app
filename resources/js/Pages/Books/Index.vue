@@ -1,16 +1,51 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
-defineProps({
+const props = defineProps({
     books: Object,
+    search: String,
 });
+
+// Nilai awal kotak pencarian diisi dari props.search
+const keyword = ref(props.search);
+
+// Dijalankan saat menekan Enter di kotak pencarian
+function cari() {
+    router.get('/books', { search: keyword.value });
+}
+
+// Dijalankan saat tombol Hapus diklik, dengan konfirmasi dulu
+function hapus(id) {
+    if (confirm('Yakin ingin menghapus buku ini?')) {
+        router.delete(route('books.destroy', id));
+    }
+}
 </script>
 
 <template>
     <AuthenticatedLayout>
         <h1>Data Buku</h1>
+
+        <!-- Flash message sukses -->
+        <div v-if="$page.props.flash.success">
+            {{ $page.props.flash.success }}
+        </div>
+
+        <!-- Flash message error (latihan mandiri) -->
+        <div v-if="$page.props.flash.error" style="color: red">
+            {{ $page.props.flash.error }}
+        </div>
+
         <Link href="/books/create">+ Tambah Buku</Link>
+
+        <input
+            v-model="keyword"
+            @keyup.enter="cari"
+            type="text"
+            placeholder="Cari judul atau pengarang..."
+        >
 
         <table>
             <thead>
@@ -18,7 +53,9 @@ defineProps({
                     <th>Kode</th>
                     <th>Judul</th>
                     <th>Pengarang</th>
+                    <th>Tahun</th>
                     <th>Stok</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,9 +63,13 @@ defineProps({
                     <td>{{ book.kode_buku }}</td>
                     <td>{{ book.judul }}</td>
                     <td>{{ book.pengarang }}</td>
+                    <td>{{ book.tahun }}</td>
                     <td>{{ book.stok }}</td>
+                    <td>
+                        <Link :href="`/books/${book.id}/edit`">Edit</Link>
+                        <button @click="hapus(book.id)">Hapus</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </AuthenticatedLayout>
-</template>
