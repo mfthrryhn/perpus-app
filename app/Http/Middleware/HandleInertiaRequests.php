@@ -34,6 +34,11 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            // Langkah 5: membagikan pesan flash ke seluruh halaman Vue
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'), // untuk latihan mandiri (flash error)
+            ],
         ];
     }
 }
